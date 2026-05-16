@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<h1>Bienvenido al sistema</h1>
+
+<p id="usuario"></p>
+
+<button onclick="logout()">Cerrar sesión</button>
+
+<script>
+    // Mostrar usuario guardado
+    const user = localStorage.getItem("usuario");
+    document.getElementById("usuario").innerText = "Usuario: " + user;
+
+    function logout() {
+        localStorage.removeItem("usuario");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>

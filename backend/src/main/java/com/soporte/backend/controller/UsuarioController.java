@@ -10,26 +10,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.soporte.backend.model.Usuario;
-import com.soporte.backend.repository.UsuarioRepository;
 
+import com.soporte.backend.service.UsuarioService;
 @RestController
 @RequestMapping("/usuarios")
 @CrossOrigin
 
 public class UsuarioController {
-    private final UsuarioRepository usuarioRepository;
-
-     public UsuarioController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    private final UsuarioService usuarioService;
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
-
-    @GetMapping
+    @GetMapping("/usuario")
     public List<Usuario> listar() {
-        return usuarioRepository.findAll();
+        return usuarioService.listar();
+    }
+    
+    @PostMapping("/usuario")
+    public Usuario guardar(@RequestBody Usuario usuario) {
+        return usuarioService.guardar(usuario);
     }
 
-    @PostMapping
-    public Usuario guardar(@RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    @PostMapping("/login")
+    public String login(@RequestBody Usuario usuario) {
+        Usuario user = usuarioService.buscarPorEmail(usuario.getEmail())
+                .orElse(null);
+
+        if (user != null) {
+            return "Login exitoso";
+        } else {
+            return "Credenciales incorrectas";
+        }
     }
 }
